@@ -1,20 +1,19 @@
 const express = require("express")
 
+//Importando routers
+const prueba = require("./routes/index")
+
 const app = express()
 
-//Usando middleware
-app.use(express.text())
+//Usando middleware globales
+//app.use(express.text())
 app.use(express.json())
+
+// Utilizando las rutas
+prueba(app)
 
 app.get('/',(req,res)=>{
     return res.status(200).send('Hola, bienvenido')
-})
-app.get('/otraruta',(req,res)=>{
-    return res.status(200).send('Hola, otra ruta')
-})
-app.post('/guardar',(req,res)=>{
-    console.log(req.body)
-    return res.status(200).send('Hola, guardar')
 })
 
 app.listen(4000,()=>{

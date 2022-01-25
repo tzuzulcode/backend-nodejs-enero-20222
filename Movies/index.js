@@ -1,5 +1,9 @@
 const express = require("express")
 
+//Trayendo conexión a BD
+const {connection} = require("./config/db")
+connection()
+
 //Importando routers
 const prueba = require("./routes/index")
 const movies = require("./routes/movies")

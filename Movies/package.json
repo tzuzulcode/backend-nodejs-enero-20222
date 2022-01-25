@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "npx nodemon index.js",
+    "dev": "npx nodemon index.js",
     "start": "node index.js"
   },
   "keywords": [],
   "author": "Tzuzul Code",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mongoose": "^6.1.8"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

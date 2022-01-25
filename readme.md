@@ -1,6 +1,6 @@
 # Exposicion
 Edu Falcon
-Cristhian Davidad Giraldo
+Cristhian David Giraldo
 Julio Mateus
 
 SQL vs NOSQL

@@ -1,3 +1,4 @@
+const MovieModel = require("../models/movie")
 class Movies{
     get(id){
         return {
@@ -29,6 +30,16 @@ class Movies{
                 fecha:"16-dic-2021"
             }
         ]
+    }
+
+    async create(){
+        const movie = await MovieModel.create({
+            title:"Spiderman",
+            rating:4.5,
+            date:new Date()
+        })
+
+        return movie
     }
 }
 

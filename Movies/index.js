@@ -1,4 +1,5 @@
 const express = require("express")
+const config = require("./config")
 
 //Trayendo conexión a BD
 const {connection} = require("./config/db")
@@ -22,6 +23,6 @@ app.get('/',(req,res)=>{
     return res.status(200).send('Hola, bienvenido')
 })
 
-app.listen(4000,()=>{
-    console.log("Servidor: http://localhost:4000")
+app.listen(config.port,()=>{
+    console.log("Servidor: http://localhost:"+config.port)
 })

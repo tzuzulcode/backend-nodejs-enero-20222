@@ -15,10 +15,14 @@ function movies(app){
         const movies = moviesService.getAll()
         return res.status(200).json(movies)
     })
-    router.post('/guardar',(req,res)=>{
-        console.log(req.body)
-        return res.status(200).send('Hola, guardar')
+    router.post('/guardar',async (req,res)=>{
+        const movie = await moviesService.create()
+        return res.status(201).json(movie)
     })
+
+    // Lucas Rojas
+    // Juand Pablo Driz
+    // Codigos de status
     
 }
 

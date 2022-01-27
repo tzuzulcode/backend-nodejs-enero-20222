@@ -1,44 +1,28 @@
 const MovieModel = require("../models/movie")
 class Movies{
-    get(id){
-        return {
-            id,
-            title:"Spiderman",
-            rating:4.5,
-            fecha:"16-dic-2021"
-        }
+    async get(id){
+        const movie = await MovieModel.findById(id)
+        return movie
     }
 
-    getAll(){
-        return [
-            {
-                id:1,
-                title:"Spiderman",
-                rating:4.5,
-                fecha:"16-dic-2021"
-            },
-            {
-                id:2,
-                title:"Spiderman",
-                rating:4.5,
-                fecha:"16-dic-2021"
-            },
-            {
-                id:3,
-                title:"Spiderman",
-                rating:4.5,
-                fecha:"16-dic-2021"
-            }
-        ]
+    async getAll(){
+        // find devuelve varios elementos
+        const movies = await MovieModel.find()
+        return movies
     }
 
-    async create(){
-        const movie = await MovieModel.create({
-            title:"Spiderman",
-            rating:4.5,
-            date:new Date()
-        })
+    async create(data){
+        const movie = await MovieModel.create(data)
+        return movie
+    }
 
+    async update(id,data){
+        const movie = await MovieModel.findByIdAndUpdate(id,data,{new:true})
+        return movie
+    }
+
+    async delete(id){
+        const movie = await MovieModel.findByIdAndDelete(id)
         return movie
     }
 }

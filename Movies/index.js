@@ -8,6 +8,8 @@ connection()
 //Importando routers
 const prueba = require("./routes/index")
 const movies = require("./routes/movies")
+const users = require("./routes/users")
+const auth = require("./routes/auth")
 
 const app = express()
 
@@ -18,6 +20,8 @@ app.use(express.json())
 // Utilizando las rutas
 prueba(app)
 movies(app)
+users(app)
+auth(app)
 
 app.get('/',(req,res)=>{
     return res.status(200).send('Hola, bienvenido')

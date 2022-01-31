@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const config = require("./config")
 
 //Trayendo conexión a BD
@@ -16,6 +17,9 @@ const app = express()
 //Usando middleware globales
 //app.use(express.text())
 app.use(express.json())
+app.use(cors({
+    origin:'*'
+}))
 
 // Utilizando las rutas
 prueba(app)

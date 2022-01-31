@@ -17,6 +17,18 @@ class Auth{
 
         return {success:false,message:"Las credenciales no coinciden"}
     }
+
+    async signup(data){
+        if(await this.users.getByEmail(data.email)){
+            return {succes:false,message:"Usuario ya registrado"}
+        }else{
+            const user = await this.users.create(data)
+            user.password = undefined
+            user.__v = undefined
+            return {succes:true,user}
+        }
+        
+    }
 }
 
 module.exports = Auth

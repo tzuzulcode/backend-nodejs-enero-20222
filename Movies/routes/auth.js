@@ -7,7 +7,13 @@ function auth(app){
 
     router.post('/login',async (req,res)=>{
         const {email,password} = req.body
+        console.log(req.body)
         const response = await authService.login(email,password)
+        return res.status(201).json(response)
+    })
+    router.post('/signup',async (req,res)=>{
+        const user = req.body
+        const response = await authService.signup(user)
         return res.status(201).json(response)
     })
 

@@ -1,4 +1,6 @@
 const Users = require("./users")
+const jwt = require("jsonwebtoken")
+const { jwt_secret } = require("../config")
 
 class Auth{
 
@@ -8,11 +10,21 @@ class Auth{
 
     async login(email,password){
         const user = await this.users.getByEmail(email)
-        console.log(user)
         if(user && user.password === password){
-            user.password = undefined
-            user.__v = undefined
-            return {success:true,user}
+            // user.password = undefined
+            // user.__v = undefined
+            // jwt.sign(user,jwt_secret,{expiresIn:"1d"},(error,token)=>{
+            //     return {success:true,user,token}
+            // })
+            const data = {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role,
+            }
+            const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
+            return {success:true,data,token}
+            
         }
 
         return {success:false,message:"Las credenciales no coinciden"}

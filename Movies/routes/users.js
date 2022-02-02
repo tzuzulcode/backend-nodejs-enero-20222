@@ -1,4 +1,5 @@
 const express = require("express")
+const { verifyToken } = require("../middleware/auth")
 const Users = require("../services/users")
 
 function users(app){
@@ -11,7 +12,7 @@ function users(app){
         const user = await usersService.get(id)
         return res.status(200).json(user)
     })
-    router.get('/',async (req,res)=>{
+    router.get('/',verifyToken,async (req,res)=>{
         const users = await usersService.getAll()
         return res.status(200).json(users)
     })

@@ -15,6 +15,8 @@
         <button>Iniciar sesion</button>
     </form>
 
+    <button id="fetchUser">Consultar usuarios</button>
+
     <!-- Ricardo Espinosa -->
     <!-- Santiago Chaparro -->
     <!-- Manuel Garcia Escalante -->
@@ -22,9 +24,10 @@
 
     <script>
         const form = document.getElementById("form")
+        const statusElement = document.getElementById("status")
+        const fetchUser = document.getElementById("fetchUser")
 
-        form.onsubmit = (event)=>{
-            event.preventDefault()
+        function iniciarSesion(){
             fetch("http://localhost:4000/auth/login",{
                 method:"POST",
                 headers:{
@@ -35,15 +38,39 @@
                     password:form.password.value
                 })
             }).then(res=>{
-                console.log(res)
                 return res.json()
             }).then(data=>{
-                console.log(data)
+                localStorage.setItem("token",data.token)
+                statusElement.innerText = "Sesión iniciada"
             })
+        }
+
+        
+
+        if(localStorage.getItem("token")){
+            statusElement.innerText = "Sesión iniciada"
+        }else{
+            statusElement.innerText = "Sin permisos"
+        }
+
+        form.onsubmit = (event)=>{
+            event.preventDefault()
+            iniciarSesion()
             // Brayan 1951
             // Matias Masparrote
             // Lucas Rojas
             // Cookies (tipos), localStorage y sessionStorage
+        }
+
+
+        fetchUser.onclick = ()=>{
+            fetch("http://localhost:4000/users",{
+                headers:{
+                    "Authorization":"Bearer "+localStorage.getItem("token")
+                }
+            })
+            .then(res=>res.json())
+            .then(data=>console.log(data))
         }
     </script>
 </body>

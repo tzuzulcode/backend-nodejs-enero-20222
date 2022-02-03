@@ -13,6 +13,7 @@ function users(app){
         return res.status(200).json(user)
     })
     router.get('/',verifyToken,async (req,res)=>{
+        console.log(req.user)
         const users = await usersService.getAll()
         return res.status(200).json(users)
     })

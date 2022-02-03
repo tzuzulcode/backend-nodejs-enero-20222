@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const cookies = require("cookie-parser")
 const config = require("./config")
 
 //Trayendo conexión a BD
@@ -18,8 +19,10 @@ const app = express()
 //app.use(express.text())
 app.use(express.json())
 app.use(cors({
-    origin:'*'
+    origin:['http://127.0.0.1:5500'],
+    credentials:true
 }))
+app.use(cookies())
 
 // Utilizando las rutas
 prueba(app)

@@ -10,6 +10,7 @@
 
     <p id="status"></p>
     <button id="logout">Cerrar sesión</button>
+    <button id="logoutCookie">Cerrar sesión cookie</button>
     <form id="form">
         <input type="email" name="email">
         <input type="password" name="password">
@@ -28,6 +29,7 @@
         const statusElement = document.getElementById("status")
         const fetchUser = document.getElementById("fetchUser")
         const logoutButton = document.getElementById("logout")
+        const logoutButtonCookie = document.getElementById("logoutCookie")
 
         function iniciarSesion(){
             fetch("http://localhost:4000/auth/login",{
@@ -38,7 +40,8 @@
                 body:JSON.stringify({
                     email:form.email.value,
                     password:form.password.value
-                })
+                }),
+                credentials:'include'
             }).then(res=>{
                 return res.json()
             }).then(data=>{
@@ -79,6 +82,20 @@
         logoutButton.onclick=()=>{
             localStorage.removeItem("token")
             statusElement.innerText = "Sin permisos"
+        }
+        logoutButtonCookie.onclick=()=>{
+            fetch("http://localhost:4000/auth/logout",{
+                // headers:{
+                //     "Authorization":"Bearer "+localStorage.getItem("token")
+                // },
+                method:"POST",
+                credentials:'include'
+            })
+            .then(res=>res.json())
+            .then(data=>{
+                console.log(data)
+                statusElement.innerText = "Sin permisos"
+            })
         }
     </script>
 </body>

@@ -10,15 +10,29 @@ function auth(app){
         const response = await authService.login(email,password)
         return res.cookie("token",response.token,{
             httpOnly:true,
+            sameSite:"none",
             secure:true,
-            sameSite:"none"
         })
         .json(response)
     })
     router.post('/signup',async (req,res)=>{
         const user = req.body
         const response = await authService.signup(user)
-        return res.status(201).json(response)
+        return res.cookie("token",response.token,{
+            httpOnly:true,
+            sameSite:"none",
+            secure:true,
+        })
+        .json(response)
+    })
+
+    router.post('/logout',(req,res)=>{
+        return res.cookie("token","",{
+            httpOnly:true,
+            sameSite:"none",
+            secure:true,
+            expires:new Date()
+        }).json({loggedOut:true})
     })
 
 }

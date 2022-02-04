@@ -24,20 +24,24 @@ class Auth{
             }
             const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
             return {success:true,data,token}
-            
         }
 
         return {success:false,message:"Las credenciales no coinciden"}
     }
 
-    async signup(data){
-        if(await this.users.getByEmail(data.email)){
+    async signup(userData){
+        if(await this.users.getByEmail(userData.email)){
             return {succes:false,message:"Usuario ya registrado"}
         }else{
-            const user = await this.users.create(data)
-            user.password = undefined
-            user.__v = undefined
-            return {succes:true,user}
+            const user = await this.users.create(userData)
+            const data = {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role,
+            }
+            const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
+            return {succes:true,data,token}
         }
         
     }

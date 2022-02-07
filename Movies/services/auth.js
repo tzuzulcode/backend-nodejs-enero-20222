@@ -20,7 +20,7 @@ class Auth{
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role,
+                role: user.role?user.role:"REGULAR",
             }
             const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
             return {success:true,data,token}
@@ -38,7 +38,7 @@ class Auth{
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role,
+                role: user.role?user.role:"REGULAR",
             }
             const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
             return {succes:true,data,token}

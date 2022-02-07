@@ -10,8 +10,8 @@ function auth(app){
         const response = await authService.login(email,password)
         return res.cookie("token",response.token,{
             httpOnly:true,
-            sameSite:"none",
-            secure:true,
+            // sameSite:"none",
+            // secure:true,
         })
         .json(response)
     })
@@ -20,8 +20,8 @@ function auth(app){
         const response = await authService.signup(user)
         return res.cookie("token",response.token,{
             httpOnly:true,
-            sameSite:"none",
-            secure:true,
+            // sameSite:"none",
+            // secure:true,
         })
         .json(response)
     })

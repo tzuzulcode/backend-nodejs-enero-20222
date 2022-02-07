@@ -5,11 +5,19 @@ const handleToken=(token,req,res,next)=>{
     try{
         const decoded = jwt.verify(token,jwt_secret)
         req.user = decoded
-        return next()
+        return validateRole(req,res,next)
     }catch(error){
         console.error("JWT error",error.message)
         return res.status(403).json({status:"Expired",message:"A valid token is required for this process"})
     }
+}
+
+const validateRole = (req,res,next)=>{
+    if(req.user.role==="ADMIN" || req.user.role===req.neededRole){
+        next()
+    }
+    
+    return res.status(403).json({status:"Insuficient permissions",message:"A superior role is required for this action"})
 }
 
 const verifyToken = (req,res,next)=>{
@@ -28,5 +36,15 @@ const verifyToken = (req,res,next)=>{
     }    
 }
 
+
+const isRegular = (req,res,next)=>{
+    req.neededRole = "REGULAR"
+    verifyToken(req,res,next)
+}
+const isAdmin = (req,res,next)=>{
+    req.neededRole = "ADMIN"
+    verifyToken(req,res,next)
+}
+
 //TODO: Se exporta como objeto porque más adelante tendremos mas middleware
-module.exports = {verifyToken}
+module.exports = {isRegular,isAdmin}

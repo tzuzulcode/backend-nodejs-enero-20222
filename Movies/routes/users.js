@@ -1,5 +1,5 @@
 const express = require("express")
-const { verifyToken } = require("../middleware/auth")
+const { isAdmin } = require("../middleware/auth")
 const Users = require("../services/users")
 
 function users(app){
@@ -12,7 +12,7 @@ function users(app){
         const user = await usersService.get(id)
         return res.status(200).json(user)
     })
-    router.get('/',verifyToken,async (req,res)=>{
+    router.get('/',isAdmin,async (req,res)=>{
         console.log(req.user)
         const users = await usersService.getAll()
         return res.status(200).json(users)
@@ -30,6 +30,7 @@ function users(app){
     })
     router.delete('/:id',async(req,res)=>{
         const {id} = req.params
+        
         const user = await usersService.delete(id)
         // delete: 200 o 202
         return res.status(200).json(user)

@@ -12,8 +12,10 @@ const handleToken=(token,req,res,next)=>{
     }
 }
 
+
+
 const validateRole = (req,res,next)=>{
-    if(req.user.role==="ADMIN" || req.user.role===req.neededRole){
+    if(req.user.role>=req.neededRole){
         next()
     }
     
@@ -33,7 +35,7 @@ const verifyToken = (req,res,next)=>{
     }else{
         const token = auth.split(" ")[1]
         handleToken(token,req,res,next)
-    }    
+    }
 }
 
 

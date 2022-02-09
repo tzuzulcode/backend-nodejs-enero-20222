@@ -37,3 +37,5 @@ app.get('/',(req,res)=>{
 app.listen(config.port,()=>{
     console.log("Servidor: http://localhost:"+config.port)
 })
+
+// Presentación de passport:

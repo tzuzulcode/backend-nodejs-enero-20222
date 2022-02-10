@@ -1,7 +1,11 @@
 const express = require("express")
 const cors = require("cors")
 const cookies = require("cookie-parser")
+const passport = require("passport")
 const config = require("./config")
+
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+
 
 //Trayendo conexión a BD
 const {connection} = require("./config/db")
@@ -23,6 +27,13 @@ app.use(cors({
     credentials:true
 }))
 app.use(cookies())
+app.use(passport.initialize())
+
+passport.use(new GoogleStrategy({
+    clientID:,
+    clientSecret:,
+    callbackURL:'http://localhost:4000',
+}))
 
 // Utilizando las rutas
 prueba(app)

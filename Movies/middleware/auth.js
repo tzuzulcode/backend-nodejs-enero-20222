@@ -16,7 +16,7 @@ const handleToken=(token,req,res,next)=>{
 
 const validateRole = (req,res,next)=>{
     if(req.user.role>=req.neededRole){
-        next()
+        return next()
     }
     
     return res.status(403).json({status:"Insuficient permissions",message:"A superior role is required for this action"})
@@ -40,13 +40,16 @@ const verifyToken = (req,res,next)=>{
 
 
 const isRegular = (req,res,next)=>{
-    req.neededRole = "REGULAR"
+    req.neededRole = 0
     verifyToken(req,res,next)
 }
 const isAdmin = (req,res,next)=>{
-    req.neededRole = "ADMIN"
+    req.neededRole = 2
+    verifyToken(req,res,next)
+}
+const isEditor = (req,res,next)=>{
+    req.neededRole = 1
     verifyToken(req,res,next)
 }
 
-//TODO: Se exporta como objeto porque más adelante tendremos mas middleware
-module.exports = {isRegular,isAdmin}
+module.exports = {isRegular,isAdmin,isEditor}

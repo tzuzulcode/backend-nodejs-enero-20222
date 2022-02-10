@@ -23,7 +23,8 @@ class Auth{
 
     async login(email,password){
         const user = await this.users.getByEmail(email)
-        if(user && user.password === password){
+        const correctPassword = await bcrypt.compare(password,user.password)
+        if(user && correctPassword){
             // user.password = undefined
             // user.__v = undefined
             // jwt.sign(user,jwt_secret,{expiresIn:"1d"},(error,token)=>{

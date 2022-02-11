@@ -1,4 +1,5 @@
 const express = require("express")
+const { isEditor } = require("../middleware/auth")
 const Movies = require("../services/movies")
 
 function movies(app){
@@ -15,18 +16,18 @@ function movies(app){
         const movies = await moviesService.getAll()
         return res.status(200).json(movies)
     })
-    router.post('/',async (req,res)=>{
+    router.post('/',isEditor,async (req,res)=>{
         const movie = await moviesService.create(req.body)
         return res.status(201).json(movie)
     })
 
-    router.put('/:id',async(req,res)=>{
+    router.put('/:id',isEditor,async(req,res)=>{
         const {id} = req.params
         const movie = await moviesService.update(id,req.body)
         // put: 200 o 204
         return res.status(200).json(movie)
     })
-    router.delete('/:id',async(req,res)=>{
+    router.delete('/:id',isEditor,async(req,res)=>{
         const {id} = req.params
         const movie = await moviesService.delete(id)
         // delete: 200 o 202

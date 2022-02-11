@@ -47,13 +47,14 @@ class Auth{
         if(await this.users.getByEmail(userData.email)){
             return {succes:false,message:"Usuario ya registrado"}
         }else{
+            userData.role = 0
             userData.password = await this.hashPassword(userData.password)
             const user = await this.users.create(userData)
             const data = {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role?user.role:"REGULAR",
+                role: 0,
             }
             const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
             return {succes:true,data,token}

@@ -23,17 +23,18 @@ const app = express()
 //app.use(express.text())
 app.use(express.json())
 app.use(cors({
-    origin:['http://127.0.0.1:5500'],
+    origin:['http://127.0.0.1:5500','http://localhost:3000'],
     credentials:true
 }))
-app.use(cookies())
-app.use(passport.initialize())
 
-passport.use(new GoogleStrategy({
-    clientID:,
-    clientSecret:,
-    callbackURL:'http://localhost:4000',
-}))
+app.use(cookies())
+// app.use(passport.initialize())
+
+// passport.use(new GoogleStrategy({
+//     clientID:,
+//     clientSecret:,
+//     callbackURL:'http://localhost:4000',
+// }))
 
 // Utilizando las rutas
 prueba(app)

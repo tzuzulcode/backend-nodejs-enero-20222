@@ -9,7 +9,8 @@ const config = {
     db_host:process.env.DD_HOST,
     db_name:process.env.DB_NAME,
     oauth_client_id:process.env.OAUTH_CLIENT_ID,
-    oauth_client_secret:process.env.OAUTH_CLIENT_SECRET
+    oauth_client_secret:process.env.OAUTH_CLIENT_SECRET,
+    oauth_callback_url:process.env.OAUTH_CALLBACK_URL
 }
 
 module.exports = config

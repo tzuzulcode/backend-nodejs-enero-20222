@@ -10,6 +10,11 @@ class Users{
         return user
     }
 
+    async getByFilter(filter){
+        const user = await UserModel.findOne(filter)
+        return user
+    }
+
     async getAll(){
         // find devuelve varios elementos
         const users = await UserModel.find()

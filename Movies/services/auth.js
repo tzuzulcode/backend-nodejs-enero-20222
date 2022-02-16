@@ -12,9 +12,18 @@ class Auth{
     async hashPassword(password){
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password,salt)
-
         return hash
+    }
 
+    getToken(user){
+        const data = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role?user.role:0,
+        }
+        const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
+        return {success:true,data,token}
     }
 
     //Hacer decrypting
@@ -30,14 +39,8 @@ class Auth{
             // jwt.sign(user,jwt_secret,{expiresIn:"1d"},(error,token)=>{
             //     return {success:true,user,token}
             // })
-            const data = {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                role: user.role?user.role:"REGULAR",
-            }
-            const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
-            return {success:true,data,token}
+            return this.getToken(user)
+            
         }
 
         return {success:false,message:"Las credenciales no coinciden"}
@@ -50,16 +53,24 @@ class Auth{
             userData.role = 0
             userData.password = await this.hashPassword(userData.password)
             const user = await this.users.create(userData)
-            const data = {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                role: 0,
-            }
-            const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
-            return {succes:true,data,token}
+            return this.getToken(user)
         }
         
+    }
+
+    async loginGoogle(profile){
+        let user = await this.users.getByFilter({idGoogle:profile.id})
+        if(!user){
+            user = await this.users.create({
+                firstName:profile.name.givenName,
+                lastName:profile.name.familyName,
+                email:profile.emails[0].value,
+                role:0,
+                provider:profile.provider,
+                idGoogle:profile.id
+            })
+        }
+        return this.getToken(user)
     }
 }
 

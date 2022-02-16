@@ -2,7 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const cookies = require("cookie-parser")
 const passport = require("passport")
-const config = require("./config")
+const {port,oauth_client_id,oauth_callback_url,oauth_client_secret} = require("./config")
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
@@ -28,26 +28,33 @@ app.use(cors({
 }))
 
 app.use(cookies())
-// app.use(passport.initialize())
+app.use(passport.initialize())
 
-// passport.use(new GoogleStrategy({
-//     clientID:,
-//     clientSecret:,
-//     callbackURL:'http://localhost:4000',
-// }))
+passport.use(new GoogleStrategy({
+    clientID:oauth_client_id,
+    clientSecret:oauth_client_secret,
+    callbackURL:oauth_callback_url
+},(accessToken,refreshToken,profile,done)=>{
+    //console.log({accessToken,refreshToken,profile})
+    done(null,{profile})
+}))
+
+passport.serializeUser((user,done)=>{
+    done(null,user)
+})
 
 // Utilizando las rutas
 prueba(app)
 movies(app)
 users(app)
-auth(app)
+auth(app,passport)
+
+
 
 app.get('/',(req,res)=>{
-    return res.status(200).send('Hola, bienvenido')
+    return res.status(200).send('Home')
 })
 
-app.listen(config.port,()=>{
-    console.log("Servidor: http://localhost:"+config.port)
+app.listen(port,()=>{
+    console.log("Servidor: http://localhost:"+port)
 })
-
-// Presentación de passport:

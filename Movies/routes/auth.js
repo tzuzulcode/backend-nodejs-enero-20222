@@ -7,11 +7,12 @@ function auth(app,passport){
 
     router.post('/login',async (req,res)=>{
         const {email,password} = req.body
+        console.log(req.body)
         const response = await authService.login(email,password)
         return res.cookie("token",response.token,{
             httpOnly:true,
-            // sameSite:"none",
-            // secure:true,
+            sameSite:"none",
+            secure:true,
         })
         .json(response)
     })
@@ -20,8 +21,8 @@ function auth(app,passport){
         const response = await authService.signup(user)
         return res.cookie("token",response.token,{
             httpOnly:true,
-            // sameSite:"none",
-            // secure:true,
+            sameSite:"none",
+            secure:true,
         })
         .json(response)
     })

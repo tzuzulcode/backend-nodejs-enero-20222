@@ -32,16 +32,20 @@ class Auth{
 
     async login(email,password){
         const user = await this.users.getByEmail(email)
-        const correctPassword = await bcrypt.compare(password,user.password)
-        if(user && correctPassword){
-            // user.password = undefined
-            // user.__v = undefined
-            // jwt.sign(user,jwt_secret,{expiresIn:"1d"},(error,token)=>{
-            //     return {success:true,user,token}
-            // })
-            return this.getToken(user)
-            
+        if(user){
+            const correctPassword = await bcrypt.compare(password,user.password)
+            if(correctPassword){
+                // user.password = undefined
+                // user.__v = undefined
+                // jwt.sign(user,jwt_secret,{expiresIn:"1d"},(error,token)=>{
+                //     return {success:true,user,token}
+                // })
+                return this.getToken(user)
+                
+            }
         }
+        
+        
 
         return {success:false,message:"Las credenciales no coinciden"}
     }

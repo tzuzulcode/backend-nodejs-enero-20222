@@ -1,5 +1,9 @@
 const jwt = require("jsonwebtoken")
-const { jwt_secret } = require("../config")
+const { jwt_secret, facebook_app_id, facebook_app_secret } = require("../config")
+const {oauth_client_id,oauth_callback_url,oauth_client_secret} = require("../config")
+
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+const FacebookStrategy = require("passport-facebook").Strategy
 
 const handleToken=(token,req,res,next)=>{
     try{
@@ -52,4 +56,26 @@ const isEditor = (req,res,next)=>{
     verifyToken(req,res,next)
 }
 
-module.exports = {isRegular,isAdmin,isEditor}
+const useGoogleStrategy = ()=>{
+    return new GoogleStrategy({
+        clientID:oauth_client_id,
+        clientSecret:oauth_client_secret,
+        callbackURL:oauth_callback_url
+    },(accessToken,refreshToken,profile,done)=>{
+        //console.log({accessToken,refreshToken,profile})
+        done(null,{profile})
+    })
+}
+
+const useFacebookStrategy = () =>{
+    return new FacebookStrategy({
+        clientID:facebook_app_id,
+        clientSecret:facebook_app_secret,
+        callbackURL:"http://localhost:4000/auth/facebook/callback"
+    },(accessToken,refreshToken,profile,done)=>{
+        //console.log({accessToken,refreshToken,profile})
+        done(null,{profile})
+    })
+}
+
+module.exports = {isRegular,isAdmin,isEditor,useGoogleStrategy,useFacebookStrategy}

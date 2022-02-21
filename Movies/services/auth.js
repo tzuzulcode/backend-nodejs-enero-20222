@@ -17,6 +17,7 @@ class Auth{
 
     getToken(user){
         const data = {
+            id:user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -62,16 +63,17 @@ class Auth{
         
     }
 
-    async loginGoogle(profile){
-        let user = await this.users.getByFilter({idGoogle:profile.id})
+    async loginProvider(profile){
+        let user = await this.users.getByFilter({idProvider:profile.id})
         if(!user){
             user = await this.users.create({
                 firstName:profile.name.givenName,
                 lastName:profile.name.familyName,
-                email:profile.emails[0].value,
+                displayName:profile.displayName,
+                email:profile.emails?profile.emails[0].value:undefined,
                 role:0,
                 provider:profile.provider,
-                idGoogle:profile.id
+                idProvider:profile.id
             })
         }
         return this.getToken(user)

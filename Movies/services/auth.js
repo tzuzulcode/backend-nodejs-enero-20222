@@ -18,6 +18,7 @@ class Auth{
     getToken(user){
         const data = {
             id:user.id,
+            displayName:user.displayName,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -67,8 +68,8 @@ class Auth{
         let user = await this.users.getByFilter({idProvider:profile.id})
         if(!user){
             user = await this.users.create({
-                firstName:profile.name.givenName,
-                lastName:profile.name.familyName,
+                firstName:profile.name?.givenName,
+                lastName:profile.name?.familyName,
                 displayName:profile.displayName,
                 email:profile.emails?profile.emails[0].value:undefined,
                 role:0,

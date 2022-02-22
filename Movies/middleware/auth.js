@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken")
-const { jwt_secret, facebook_app_id, facebook_app_secret } = require("../config")
+const { jwt_secret, facebook_app_id, facebook_app_secret, github_client_id, github_client_secret, twitter_consumer_id, twitter_consumer_secret } = require("../config")
 const {oauth_client_id,oauth_callback_url,oauth_client_secret} = require("../config")
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const FacebookStrategy = require("passport-facebook").Strategy
+const GitHubStrategy = require("passport-github2").Strategy
+const TwitterStrategy = require("passport-twitter").Strategy
 
 const handleToken=(token,req,res,next)=>{
     try{
@@ -77,5 +79,33 @@ const useFacebookStrategy = () =>{
         done(null,{profile})
     })
 }
+const useGitHubStrategy = () =>{
+    return new GitHubStrategy({
+        clientID:github_client_id,
+        clientSecret:github_client_secret,
+        callbackURL:"http://localhost:4000/auth/github/callback"
+    },(accessToken,refreshToken,profile,done)=>{
+        //console.log({accessToken,refreshToken,profile})
+        done(null,{profile})
+    })
+}
+const useTwitterStrategy = () =>{
+    return new TwitterStrategy({
+        consumerKey:twitter_consumer_id,
+        consumerSecret:twitter_consumer_secret,
+        callbackURL:"http://localhost:4000/auth/twitter/callback"
+    },(accessToken,refreshToken,profile,done)=>{
+        //console.log({accessToken,refreshToken,profile})
+        done(null,{profile})
+    })
+}
 
-module.exports = {isRegular,isAdmin,isEditor,useGoogleStrategy,useFacebookStrategy}
+module.exports = {
+    isRegular,
+    isAdmin,
+    isEditor,
+    useGoogleStrategy,
+    useFacebookStrategy,
+    useGitHubStrategy,
+    useTwitterStrategy
+}

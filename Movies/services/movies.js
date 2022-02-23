@@ -12,8 +12,15 @@ class Movies{
     }
 
     async create(data){
-        const movie = await MovieModel.create(data)
-        return movie
+        try{
+            const movie = await MovieModel.create(data)
+            return movie
+        }catch(error){
+            const details = error.errors.rating
+            return {created:false,message:`El valor '${details.value}' es invalido en ${details.path}`}
+        }
+        
+        
     }
 
     async update(id,data){

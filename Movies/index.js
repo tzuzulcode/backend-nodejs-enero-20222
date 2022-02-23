@@ -1,8 +1,9 @@
 const express = require("express")
 const cors = require("cors")
 const cookies = require("cookie-parser")
+const session = require("express-session")
 
-const {port} = require("./config")
+const {port, session_secret} = require("./config")
 
 //Trayendo conexión a BD
 const {connection} = require("./config/db")
@@ -22,6 +23,11 @@ app.use(express.json())
 app.use(cors({
     origin:['http://127.0.0.1:5500','http://localhost:3000'],
     credentials:true
+}))
+app.use(session({
+    secret:session_secret,
+    resave:false,
+    saveUninitialized:true
 }))
 
 app.use(cookies())

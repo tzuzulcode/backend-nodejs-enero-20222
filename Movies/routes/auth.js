@@ -1,5 +1,5 @@
 const express = require("express")
-const { useGoogleStrategy, useFacebookStrategy,useGitHubStrategy, isRegular } = require("../middleware/auth")
+const { useGoogleStrategy, useFacebookStrategy,useGitHubStrategy,useTwitterStrategy, isRegular } = require("../middleware/auth")
 const passport = require("passport")
 
 const Auth = require("../services/auth")
@@ -13,6 +13,7 @@ function auth(app){
     passport.use(useGoogleStrategy())
     passport.use(useFacebookStrategy())
     passport.use(useGitHubStrategy())
+    passport.use(useTwitterStrategy())
     
     passport.serializeUser((user,done)=>{
         done(null,user)
@@ -27,7 +28,7 @@ function auth(app){
             sameSite:"none",
             secure:true,
         })
-        .json(response)
+        .json(response.data)
     })
     router.post('/signup',async (req,res)=>{
         const user = req.body
@@ -37,7 +38,7 @@ function auth(app){
             sameSite:"none",
             secure:true,
         })
-        .json(response)
+        .json(response.data)
     })
 
     router.post('/logout',(req,res)=>{
@@ -65,7 +66,6 @@ function auth(app){
     })
     router.get('/facebook',passport.authenticate("facebook"))
     router.get('/facebook/callback',passport.authenticate("facebook"),async (req,res)=>{
-        console.log(req.user.profile)
         const response = await authService.loginProvider(req.user.profile)
         return res.cookie("token",response.token,{
             httpOnly:true,
@@ -77,7 +77,6 @@ function auth(app){
     })
     router.get('/github',passport.authenticate("github"))
     router.get('/github/callback',passport.authenticate("github"),async (req,res)=>{
-        console.log(req.user.profile)
         const response = await authService.loginProvider(req.user.profile)
         return res.cookie("token",response.token,{
             httpOnly:true,
@@ -89,7 +88,6 @@ function auth(app){
     })
     router.get('/twitter',passport.authenticate("twitter"))
     router.get('/twitter/callback',passport.authenticate("twitter"),async (req,res)=>{
-        console.log(req.user.profile)
         const response = await authService.loginProvider(req.user.profile)
         return res.cookie("token",response.token,{
             httpOnly:true,

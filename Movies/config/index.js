@@ -4,6 +4,7 @@ const config = {
     mode: process.env.MODE,
     jwt_secret:process.env.JWT_SECRET,
     port:process.env.PORT,
+    session_secret:process.env.SESSION_SECRET,
     db_password: process.env.DB_PASSWORD,
     db_username: process.env.DB_USERNAME,
     db_host:process.env.DD_HOST,

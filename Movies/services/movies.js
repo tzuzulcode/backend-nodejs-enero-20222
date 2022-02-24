@@ -1,5 +1,16 @@
 const MovieModel = require("../models/movie")
 class Movies{
+
+    validate(movie){
+        const error = movie.validateSync()
+        if(error){
+            const errorMessages = Object.keys(error.errors).map(e=>error.errors[e].message)
+            return {error:true,errorMessages}
+        }
+        return {error:false}
+
+    }
+
     async get(id){
         const movie = await MovieModel.findById(id)
         return movie
@@ -12,15 +23,26 @@ class Movies{
     }
 
     async create(data){
-        try{
-            const movie = await MovieModel.create(data)
-            return movie
-        }catch(error){
-            const details = error.errors.rating
-            return {created:false,message:`El valor '${details.value}' es invalido en ${details.path}`}
+
+        const movie = new MovieModel(data)
+        const validation = this.validate(movie)
+
+        if(validation.error){
+            return {created:false,errors:validation.errorMessages}
         }
+
+        return await movie.save()
         
-        
+        // movie.validate((error)=>{
+        //     console.log(error)
+        // })
+
+        // try{
+        //     const movie = await MovieModel.create(data)
+        //     return movie
+        // }catch(error){
+        //     return {created:false,message:`Hubo un error`}
+        // }
     }
 
     async update(id,data){

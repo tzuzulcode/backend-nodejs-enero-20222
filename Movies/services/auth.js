@@ -24,7 +24,7 @@ class Auth{
             email: user.email,
             role: user.role?user.role:0,
         }
-        const token = jwt.sign(data,jwt_secret,{expiresIn:"1d"})
+        const token = jwt.sign(data,jwt_secret,{expiresIn:"7d"})
         return {success:true,data,token}
     }
 

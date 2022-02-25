@@ -33,7 +33,12 @@ class Auth{
     //bcrypt.compare(password,user.password)
 
     async login(email,password){
+        if(!email || !password){
+            return {success:false,message:"Ingresa credenciales"}
+        }
+        console.log(email)
         const user = await this.users.getByEmail(email)
+        console.log(user)
         if(user){
             const correctPassword = await bcrypt.compare(password,user.password)
             if(correctPassword){

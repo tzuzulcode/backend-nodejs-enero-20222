@@ -3,6 +3,7 @@ const { useGoogleStrategy, useFacebookStrategy,useGitHubStrategy,useTwitterStrat
 const passport = require("passport")
 
 const Auth = require("../services/auth")
+const tokenToCookie= require("../helper/tokenToCookie")
 function auth(app){
     const router = express.Router()
     const authService = new Auth()
@@ -23,27 +24,13 @@ function auth(app){
         const {email,password} = req.body
         const response = await authService.login(email,password)
 
-        if(response.success){
-            return res.cookie("token",response.token,{
-                httpOnly:true,
-                sameSite:"none",
-                secure:true,
-            })
-            .json(response.data)
-        }
-
-        return res.json(response)
+        return tokenToCookie(res,response)
     })
 
     router.post('/signup',async (req,res)=>{
         const user = req.body
         const response = await authService.signup(user)
-        return res.cookie("token",response.token,{
-            httpOnly:true,
-            sameSite:"none",
-            secure:true,
-        })
-        .json(response.data)
+        return tokenToCookie(res,response)
     })
 
     router.post('/logout',(req,res)=>{
@@ -63,42 +50,27 @@ function auth(app){
     }))
     router.get('/google/callback',passport.authenticate("google"),async (req,res)=>{
         const response = await authService.loginProvider(req.user.profile)
-        return res.cookie("token",response.token,{
-            httpOnly:true,
-            sameSite:"none",
-            secure:true,
-        }).json(response)
+        return tokenToCookie(res,response)
     })
     router.get('/facebook',passport.authenticate("facebook"))
     router.get('/facebook/callback',passport.authenticate("facebook"),async (req,res)=>{
         const response = await authService.loginProvider(req.user.profile)
-        return res.cookie("token",response.token,{
-            httpOnly:true,
-            sameSite:"none",
-            secure:true,
-        }).json(response)
+        return tokenToCookie(res,response)
 
         //return res.json({message:"Bienvenido"})
     })
     router.get('/github',passport.authenticate("github"))
     router.get('/github/callback',passport.authenticate("github"),async (req,res)=>{
         const response = await authService.loginProvider(req.user.profile)
-        return res.cookie("token",response.token,{
-            httpOnly:true,
-            sameSite:"none",
-            secure:true,
-        }).json(response)
+        
+        return tokenToCookie(res,response)
 
         //return res.json({message:"Bienvenido"})
     })
     router.get('/twitter',passport.authenticate("twitter"))
     router.get('/twitter/callback',passport.authenticate("twitter"),async (req,res)=>{
         const response = await authService.loginProvider(req.user.profile)
-        return res.cookie("token",response.token,{
-            httpOnly:true,
-            sameSite:"none",
-            secure:true,
-        }).json(response)
+        return tokenToCookie(res,response)
 
         //return res.json({message:"Bienvenido"})
     })

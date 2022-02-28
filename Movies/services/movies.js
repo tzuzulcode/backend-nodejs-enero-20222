@@ -4,7 +4,14 @@ class Movies{
     validate(movie){
         const error = movie.validateSync()
         if(error){
-            const errorMessages = Object.keys(error.errors).map(e=>error.errors[e].message)
+            const errorMessages = Object.keys(error.errors).map(e=>{
+                const errorDetails = error.errors[e]
+                if(errorDetails.name === "CastError"){
+                    return `El campo "${errorDetails.path}" debe ser: "${errorDetails.kind}"`
+                }
+                
+                return error.errors[e].message
+            })
             return {error:true,errorMessages}
         }
         return {error:false}

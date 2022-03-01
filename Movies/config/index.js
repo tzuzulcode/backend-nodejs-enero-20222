@@ -19,7 +19,12 @@ const config = {
     github_client_id:process.env.GITHUB_CLIENT_ID,
     github_client_secret:process.env.GITHUB_CLIENT_SECRET,
     twitter_consumer_id:process.env.TWITTER_CONSUMER_ID,
-    twitter_consumer_secret:process.env.TWITTER_CONSUMER_SECRET
+    twitter_consumer_secret:process.env.TWITTER_CONSUMER_SECRET,
+    email_host:process.env.EMAIL_HOST,
+    email_port:process.env.EMAIL_PORT,
+    email_secure:process.env.EMAIL_SECURE,
+    email_user:process.env.EMAIL_USER,
+    email_password:process.env.EMAIL_PASSWORD,
 }
 console.log(config.callback_url)
 module.exports = config

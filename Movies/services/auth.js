@@ -2,6 +2,7 @@ const Users = require("./users")
 const jwt = require("jsonwebtoken")
 const { jwt_secret } = require("../config")
 const bcrypt = require("bcrypt")
+const sendEmail = require("../libs/email")
 
 class Auth{
 
@@ -62,6 +63,7 @@ class Auth{
             userData.role = 0
             userData.password = await this.hashPassword(userData.password)
             const user = await this.users.create(userData)
+            await sendEmail(userData.email,"Registro exitoso","Bienvenido a la aplicación","<h1><em>Bienvenido</em> a la aplicación</h1>")
             return this.getToken(user)
         }
         

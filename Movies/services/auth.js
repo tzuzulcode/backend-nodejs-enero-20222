@@ -63,7 +63,7 @@ class Auth{
             userData.role = 0
             userData.password = await this.hashPassword(userData.password)
             const user = await this.users.create(userData)
-            await sendEmail(userData.email,"Registro exitoso","Bienvenido a la aplicación","<h1><em>Bienvenido</em> a la aplicación</h1>")
+            await sendEmail(userData.email,"Registro exitoso","Bienvenido a la aplicación","<a href='http://localhost:4000'><em>Bienvenido</em> a la aplicación</a>")
             return this.getToken(user)
         }
         

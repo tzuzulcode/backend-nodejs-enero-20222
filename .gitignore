@@ -1,4 +1,4 @@
-/movies/node_modules/
+node_modules/
 .idea/
 .DS_store
 .env

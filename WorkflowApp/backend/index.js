@@ -5,6 +5,7 @@ const { port, env } = require("./config")
 
 //Importando routers
 const auth = require("./routes/auth")
+const teams = require("./routes/teams")
 
 const app = express()
 
@@ -20,6 +21,7 @@ connection()
 
 // Utilizando las rutas
 auth(app)
+teams(app)
 
 
 app.get("/",(req,res)=>{

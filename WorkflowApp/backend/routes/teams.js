@@ -16,6 +16,7 @@ function teams(app){
 
     router.post("/",isRegular,async (req,res)=>{
         const team = await teamsService.create(req.user.id,req.body)
+        // const team = await teamsService.create(req.user,req.body)
 
         return res.json(team)
     })

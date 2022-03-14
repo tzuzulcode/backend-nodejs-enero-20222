@@ -13,8 +13,15 @@ const teamSchema = new Schema({
     description:String,
     members:[
         {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"users"
+            _id:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"users"
+            },
+            role:{
+                type:String,
+                enum:["editor","validator","normal","leader"],
+                default:"normal"
+            }
         }
     ]
 })

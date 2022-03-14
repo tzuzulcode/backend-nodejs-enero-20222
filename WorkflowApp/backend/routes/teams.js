@@ -20,6 +20,20 @@ function teams(app){
 
         return res.json(team)
     })
+    router.post("/addMember",async (req,res)=>{
+
+        const team = await teamsService.addMember(req.body.idTeam,req.body.idNewMember)
+        // const team = await teamsService.create(req.user,req.body)
+
+        return res.json(team)
+    })
+    router.post("/changeRole",async (req,res)=>{
+
+        const team = await teamsService.changeRole(req.body.idTeam,req.body.idMember,req.body.newRole)
+        // const team = await teamsService.create(req.user,req.body)
+
+        return res.json(team)
+    })
 }
 
 module.exports = teams

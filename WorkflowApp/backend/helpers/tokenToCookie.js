@@ -6,8 +6,8 @@ function tokenToCookie(res,data){
         return res.cookie("token",data.token,{
             httpOnly:true,
             sameSite:"none",
+            // secure:env!=="dev",
             secure:true,
-            //secure:env!=="dev",
             expires:date
         }).json(data.data)
     }

@@ -4,7 +4,7 @@ const { useGoogleStrategy, isRegular } = require("../middleware/auth")
 const passport = require("passport")
 
 const Auth = require("../services/auth")
-const tokenToCookie= require("../helpers/tokenToCookie")
+const {tokenToCookie,tokenToCookieAndRedirect}= require("../helpers/tokenToCookie")
 const { env } = require("../config")
 
 function auth(app){
@@ -54,7 +54,7 @@ function auth(app){
     }))
     router.get('/google/callback',passport.authenticate("google"),async (req,res)=>{
         const response = await authService.loginProvider(req.user.profile)
-        return tokenToCookie(res,response)
+        return tokenToCookieAndRedirect(res,response)
     })
     // router.get('/facebook',passport.authenticate("facebook"))
     // router.get('/facebook/callback',passport.authenticate("facebook"),async (req,res)=>{

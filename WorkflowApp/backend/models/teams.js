@@ -9,6 +9,7 @@ const teamSchema = new Schema({
         ref:"users"
     },
     name:String,
+    fileKey:String,
     img:String,
     description:String,
     members:[

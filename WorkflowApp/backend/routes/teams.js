@@ -1,5 +1,4 @@
 const express = require("express")
-const { downloadFile } = require("../libs/storage")
 const { isRegular } = require("../middleware/auth")
 const upload = require("../middleware/upload")
 
@@ -16,18 +15,12 @@ function teams(app){
         return res.json(teams)
     })
 
-    router.get("/file/:fileName",(req,res)=>{
-        const {fileName} = req.params
-
-        downloadFile(fileName,res)
-    })
     router.get("/:id",isRegular,async(req,res)=>{
         const team = await teamsService.get(req.params.id)
         return res.json(team)
     })
 
     router.post("/",isRegular,upload.single("img"),async (req,res)=>{
-        console.log(req.file)
         const team = await teamsService.create(req.user.id,req.body,req.file)
         // const team = await teamsService.create(req.user,req.body)
 

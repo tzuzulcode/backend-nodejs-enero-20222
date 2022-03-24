@@ -12,6 +12,10 @@ const storage = new Storage({
 
 
 const uploadFile = (fileName,buffer)=>{
+
+    if(!fileName || !buffer){
+        return {success:false,message:"A file is necessary"}
+    }
     
     const ext = path.extname(fileName)
     const uuidFileName = uuid.v4()+ext
@@ -35,16 +39,13 @@ const uploadFile = (fileName,buffer)=>{
 const downloadFile = (fileName,res)=>{
     //Referencia al objeto de archivo en google cloud
     const file = storage.bucket(bucket_name).file(fileName)
-
     const stream = file.createReadStream()
-
+    .on("error",(error)=>{
+        if(error.code===404){
+            res.status(error.code).json({error:true,message:"No se encontró el archivo"})
+        }
+    }) 
     stream.pipe(res)
-        .on("finish",()=>{
-            console.log("Descargado exitosamente")
-        })
-        .on("error",(err)=>{
-            console.log(err)
-        })
 }
 
 

@@ -3,17 +3,20 @@ const { uploadFile } = require("../libs/storage")
 
 class Teams{
     async create(idLeader,data,file){
-        const uploaded = await uploadFile(file.originalname,file.buffer)
-
-        console.log(uploaded)
-        if(uploaded.success){
-            const newTeam = {...data,img:uploaded.fileName,idLeader,members:[{_id:idLeader}]}
+        let uploaded
+        if(file){
+            uploaded = await uploadFile(file?.originalname,file?.buffer)
+        }
+        if(uploaded?.success){
+            const newTeam = {...data,img:"/files/"+uploaded.fileName,fileKey:uploaded.fileName,idLeader,members:[{_id:idLeader}]}
             const team = await TeamModel.create(newTeam)
 
             return team
+        }else{
+            const newTeam = {...data,idLeader,members:[{_id:idLeader}]}
+            const team = await TeamModel.create(newTeam)
+            return team
         }
-
-        return uploaded
     }
     // async create(leader,data){
     //     const newTeam = {...data,leader:{

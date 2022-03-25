@@ -24,7 +24,11 @@ const teamSchema = new Schema({
                 default:"normal"
             }
         }
-    ]
+    ],
+    lists:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"lists"
+    }]
 })
 // const teamSchema = new Schema({
 //     leader:{

@@ -36,6 +36,7 @@ function teams(app){
 
         return res.json(team)
     })
+
     router.post("/changeRole",async (req,res)=>{
 
         const team = await teamsService.changeRole(req.body.idTeam,req.body.idMember,req.body.newRole)
@@ -43,11 +44,24 @@ function teams(app){
 
         return res.json(team)
     })
+
     router.delete("/removeMember",async (req,res)=>{
         const team = await teamsService.deleteMember(req.body.idTeam,req.body.idMember)
         // const team = await teamsService.create(req.user,req.body)
 
         return res.json(team)
+    })
+    router.post("/:idTeam/addList",async (req,res)=>{
+
+        const list = await teamsService.addList(req.params.idTeam,req.body)
+
+        return res.json(list)
+    })
+    router.delete("/:idTeam/removeList/:idList",async (req,res)=>{
+
+        const list = await teamsService.removeList(req.params.idTeam,req.params.idList)
+
+        return res.json(list)
     })
 }
 

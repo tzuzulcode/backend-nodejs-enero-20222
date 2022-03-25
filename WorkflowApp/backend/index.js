@@ -7,6 +7,7 @@ const { port, env } = require("./config")
 const auth = require("./routes/auth")
 const teams = require("./routes/teams")
 const files = require("./routes/files")
+const lists = require("./routes/lists")
 
 const app = express()
 
@@ -24,6 +25,7 @@ connection()
 auth(app)
 teams(app)
 files(app)
+lists(app)
 
 
 app.get("/",(req,res)=>{

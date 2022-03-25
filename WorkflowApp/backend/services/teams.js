@@ -1,4 +1,6 @@
+const ListService = require("./lists")
 const TeamModel = require("../models/teams")
+
 const { uploadFile } = require("../libs/storage")
 
 class Teams{
@@ -41,7 +43,7 @@ class Teams{
         return teams
     }
     async get(idTeam){
-        const team = await TeamModel.find({_id:idTeam}).populate("members._id","name email").populate("idLeader","name email")
+        const team = await TeamModel.find({_id:idTeam}).populate("members._id","name email").populate("idLeader","name email").populate("lists")
         console.log(team)
         return team[0]
     }
@@ -63,6 +65,19 @@ class Teams{
     async deleteMember(idTeam,idMember){
         const result = await TeamModel.updateOne({_id:idTeam},{$pull:{members:{_id:idMember}}})
         return result
+    }
+
+    async addList(idTeam,listData){
+        const listService = new ListService()
+        const list = await listService.create(listData)
+        const result = await TeamModel.updateOne({_id:idTeam},{$push:{lists:list.id}})
+        return list
+    }
+    async removeList(idTeam,idList){
+        const listService = new ListService()
+        const list = await listService.delete(idList)
+        const result = await TeamModel.updateOne({_id:idTeam},{$pull:{lists:idList}})
+        return list
     }
 }
 

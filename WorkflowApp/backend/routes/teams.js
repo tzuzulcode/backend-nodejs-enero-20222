@@ -57,11 +57,23 @@ function teams(app){
 
         return res.json(list)
     })
+
+    router.put("/:idTeam",async (req,res)=>{
+        const team = await teamsService.update(req.params.idTeam,req.body)
+
+        return res.json(team)
+    })
+    
     router.delete("/:idTeam/removeList/:idList",async (req,res)=>{
-
+        
         const list = await teamsService.removeList(req.params.idTeam,req.params.idList)
-
+        
         return res.json(list)
+    })
+    router.delete("/:idTeam",async (req,res)=>{
+        const team = await teamsService.delete(req.params.idTeam)
+
+        return res.json(team)
     })
 }
 

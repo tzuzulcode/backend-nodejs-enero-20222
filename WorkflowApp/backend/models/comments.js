@@ -8,6 +8,10 @@ const commentSchema = new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"tasks"
     },
+    idUser:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"users"
+    },
     content:String,
     fileKey:String,
     file:String,

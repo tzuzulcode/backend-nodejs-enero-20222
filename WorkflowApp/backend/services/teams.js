@@ -43,7 +43,7 @@ class Teams{
         return teams
     }
     async get(idTeam){
-        const team = await TeamModel.find({_id:idTeam}).populate("members._id","name email").populate("idLeader","name email").populate("lists")
+        const team = await TeamModel.find({_id:idTeam}).populate("members._id","name email").populate("idLeader","name email").populate({path:"lists",populate:{path:"tasks",model:"tasks"}})
         console.log(team)
         return team[0]
     }
@@ -52,6 +52,18 @@ class Teams{
 
     //     return teams
     // }
+
+    async update(id,data){
+        const team = await TeamModel.findByIdAndUpdate(id,data,{new:true})
+
+        return team
+    }
+
+    async delete(id){
+        const team = await TeamModel.findByIdAndDelete(id)
+
+        return team
+    }
 
     async addMember(idTeam,idNewMember){
         const result = await TeamModel.updateOne({_id:idTeam},{$push:{members:{_id:idNewMember}}})

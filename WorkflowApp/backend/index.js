@@ -8,6 +8,8 @@ const auth = require("./routes/auth")
 const teams = require("./routes/teams")
 const files = require("./routes/files")
 const lists = require("./routes/lists")
+const tasks = require("./routes/tasks")
+const users = require("./routes/users")
 
 const app = express()
 
@@ -26,6 +28,8 @@ auth(app)
 teams(app)
 files(app)
 lists(app)
+tasks(app)
+users(app)
 
 
 app.get("/",(req,res)=>{

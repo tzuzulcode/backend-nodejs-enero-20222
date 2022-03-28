@@ -10,13 +10,21 @@ function lists(app){
 
     app.use("/lists",router)
 
-    router.post("/addTask",isRegular,(req,res)=>{
-        return res.json({data:"Hola"})
+    router.post("/:idList/addTask",isRegular,async (req,res)=>{
+        const result = await listService.addTask(req.params.idList,req.body)
+        return res.json(result)
     })
 
-    router.put("/:idList",(req,res)=>{
-        const list =  listService.update(req.params.idList,req.body)
+    router.put("/:idList",isRegular,async (req,res)=>{
+        const list = await listService.update(req.params.idList,req.body)
         return res.json(list)
+    })
+
+    router.delete("/:idList/removeTask/:idTask",isRegular,async (req,res)=>{
+
+        const task = await listService.removeTask(req.params.idList,req.params.idTask)
+
+        return res.json(task)
     })
 }
 

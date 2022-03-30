@@ -21,23 +21,39 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         const stripe = Stripe("pk_test_51KTd1dCxJ8HWxsAUvHdkJU90wXuUHO4qa4bF5dq3A7kCPWLAiaPnQ4bDpvBqIVMHPdABDwVMODmDff6jl8ok59OJ00SeHORvaW")
-
+        let elements
         fetch("http://localhost:4000/api/payments/intent",{
             headers:{
                 "Content-Type":"application/json"
             },
             method:"POST",
             body:JSON.stringify({
-                amount:100,
+                amount:10000,
             })
         }).then(res=>res.json())
             .then(data=>{
-            const elements = stripe.elements({appearance:{
+            elements = stripe.elements({appearance:{
                     theme: 'stripe',
                 }, clientSecret:data.clientSecret });
             const paymentElement = elements.create("payment");
             paymentElement.mount("#payment-element");
         })
+
+
+        const form = document.getElementById("payment-form")
+
+        form.onsubmit=async (event)=>{
+            event.preventDefault()
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    // Make sure to change this to your payment completion page
+                    return_url: "http://localhost:4000",
+                },
+            });
+
+            console.log(error)
+        }
     </script>
 </body>
 </html>

@@ -8,10 +8,11 @@ const payments = require("./routes/payments")
 
 const app = express()
 
+app.use("/api/payments/webhook",express.raw({type: 'application/json'}))
 app.use(express.json())
 app.use(cors({
     credentials:true,
-    origin:["http://locahost:3000","http://localhost:63342"]
+    origin:["http://locahost:3000","http://localhost:63342","http://127.0.0.1:5500"]
 }))
 
 

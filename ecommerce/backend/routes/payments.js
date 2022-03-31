@@ -19,15 +19,12 @@ function payments(app){
         })
     })
 
-    router.post("/webhook",express.raw({type: 'application/json'}),async(req,res)=>{
+    router.post("/webhook",async(req,res)=>{
         const sig = req.headers['stripe-signature'];
 
-        console.log(req.body)
-
         const result = pay.createEvent(req.body,sig)
-        console.log(result)
+        
         if(result.success){
-
             return res.status(200).send()
         }
 

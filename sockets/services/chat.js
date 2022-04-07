@@ -1,23 +1,39 @@
 const uuid = require("uuid").v4
 
 const messages = []
-const users = new Map()
+const users = new Set()
 
 class Chat {
-  constructor(io, socket) {
+  constructor(io) {
     this.io = io
-    this.socket = socket
 
-    socket.on("getMessages", () => {
-      this.getMessages()
+    io.on("connection", (socket) => {
+      console.log("Conexion realizada")
+      socket.on("new user", (data) => {
+        socket.userId = data
+        users.add(data)
+        console.log(users)
+        io.emit("new user", [...users])
+      })
+
+      socket.on("disconnect", () => {
+        users.delete(socket.userId)
+        io.emit("user disconnected", socket.userId)
+      })
+
+
     })
 
-    socket.on("message", (message) => {
-      this.handleMessage(message)
-    })
+    // socket.on("getMessages", () => {
+    //   this.getMessages()
+    // })
+
+    // socket.on("message", (message) => {
+    //   this.handleMessage(message)
+    // })
   }
 
-  sendMessage(message) {
+  /* sendMessage(message) {
     this.io.sockets.emit("message", message)
   }
 
@@ -32,7 +48,7 @@ class Chat {
       message,
       time: Date.now()
     }
-  }
+  } */
 }
 
 module.exports = Chat

@@ -1,14 +1,18 @@
 const express = require("express")
 const cors = require("cors")
 const { port, env } = require("./config")
+const { connection } = require("./config/db")
+
+connection()
 
 
 const payments = require("./routes/payments")
+const products = require("./routes/products")
 
 
 const app = express()
 
-app.use("/api/payments/webhook",express.raw({type: 'application/json'}))
+app.use("/api/payments/webhook", express.raw({ type: 'application/json' }))
 app.use(express.json())
 app.use(cors({
     credentials:true,
@@ -17,13 +21,14 @@ app.use(cors({
 
 
 payments(app)
+products(app)
 
 
-app.get("/",(req,res)=>{
-    return res.json({hello:"world"})
+app.get("/", (req, res) => {
+    return res.json({ hello: "world" })
 })
 
-app.listen(port,()=>{
-    console.log("Modo:",env)
-    console.log("listening on: http://localhost:"+port)
+app.listen(port, () => {
+    console.log("Modo:", env)
+    console.log("listening on: http://localhost:" + port)
 })
